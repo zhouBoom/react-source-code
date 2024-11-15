@@ -251,6 +251,13 @@ function deepDOMDiff(oldVNode, newVNode) {
  * @param {*} currentDOM 旧的真实dom
  * @param {*} oldChildren 旧的虚拟dom
  * @param {*} newChildren 新的虚拟dom
+ * @todo: DomDiff算法由于是按照顺序来寻找key，然后判断后面是否要移动，所以如果顺序不一样，则会出现问题，例如：
+ * 旧的虚拟dom为：['A', 'B', 'C', 'D', 'E']
+ * 新的虚拟dom为：['E', 'A', 'B', 'C', 'D']
+ * 如果按照顺序来寻找key，则ABCD都需要重新移动，其实我们只需要移动E就可以了，所以需要优化
+ * 优化思路：在VUE3中有个新算法叫最长递增序列，原理是
+ * 在一批子节点中有可以复用的，则要选出不需要移动的最长的子序列，然后剩下的就是需要移动的节点
+ * 例如：['E', 'A', 'B', 'C', 'D']，最长递增序列为：['A', 'B', 'C', 'D']，所以只需要移动E
  */
 function updateChildren(parentDom, oldChildren, newChildren) {
     // 更新子节点 不动、移动、删除、新建
