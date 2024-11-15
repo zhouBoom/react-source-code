@@ -17,7 +17,8 @@ function createElement(type, properties, children) {
     let props = {...properties};
     if (arguments.length > 3) {
         // 在这处理多个子节点的情况
-        props.children = [...arguments].slice(2).map(toVNode);
+        // props.children = [...arguments].slice(2).map(toVNode);
+        props.children = Array.prototype.slice.call(arguments, 2).map(toVNode);
     } else {
         props.children = toVNode(children);
     }

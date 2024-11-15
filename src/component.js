@@ -46,6 +46,7 @@ class Updater {
                 return {...perStates, ...newStates}
             }, ClassComponentInstance.state)
             this.pendingStates.length = 0
+            // 调用类组件的实例的更新方法
             ClassComponentInstance.update()
         }
     }
@@ -76,9 +77,10 @@ export class Component {
         // 2. 根据虚拟dom创建真实dom
         // 3. 将真实dom挂在到容器中
         const oldVNode = this.oldVNode; // TODO: 让类组件拥有一个oldVNode属性保存组件实例的虚拟dom
+        console.log('updateComponent oldVNode', oldVNode);
         const oldDom = findDOMByVNode(oldVNode); // TODO: 将真实DOM保存到相应的虚拟DOM上
         const newVNode = this.render();
-        updateDomTree(oldDom, newVNode);
+        updateDomTree(oldVNode, newVNode, oldDom);
         this.oldVNode = newVNode;
     }
 }

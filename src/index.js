@@ -61,9 +61,49 @@ class MyChildComponent extends React.Component {
         )
     }
 }
+// 调试domDiff算法
+class MyChildComponent2 extends React.Component {
+    isRest = false;
+    oldArr = ['A', 'B', 'C', 'D', 'E'];
+    newArr = ['C', 'B', 'E', 'F', 'A'];
+    constructor(props) {
+        super(props);
+        this.state = {
+            arr: this.oldArr
+        }
+    }
+    updateShowArr() {
+        this.setState({
+            arr: this.isRest ? this.oldArr : this.newArr
+        })
+        this.isRest = !this.isRest;
+    }
+    render() {
+        return <div>
+            <div className="diff-test-class" style={{
+                color: 'red',
+                fontSize: '20px',
+                cursor: 'pointer',
+                padding: '10px',
+                border: '1px solid #999',
+                width: '200px',
+                textAlign: 'center'
+            }} onClick={() => this.updateShowArr()}>
+                DIFF TEST
+            </div>
+            <div>
+                {
+                    this.state.arr.map((item, index) => {
+                        return <div key={item}>{item}</div>
+                    })
+                }
+            </div>
+        </div>
+    }
+}
 
 const MyForwardRefComponent = React.forwardRef((props, ref) => {
     return <div>转发ref<input ref={ref}></input></div>
 });
-ReactDOM.render(<MyChildComponent/>, document.getElementById('root'));
+ReactDOM.render(<MyChildComponent2/>, document.getElementById('root'));
 // console.log(<div >Hello World<span>xx1</span><span>xx2</span></div>);
